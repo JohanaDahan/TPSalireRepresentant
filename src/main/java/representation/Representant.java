@@ -8,7 +8,7 @@ public class Representant {
 	private String adresse;
 	private float salaireFixe;
         private ZoneGeographique secteur;
-        private final float[] CAmensuel = new float[12];
+        private final  float[] CAmensuel = {0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f};
         
 	public Representant(int numero, String nom, String prenom, ZoneGeographique secteur) {
 		this.numero = numero;
@@ -53,6 +53,10 @@ public class Representant {
 	public void setSecteur(int numero, String nom) {
 		 secteur = new ZoneGeographique(numero, nom);
 	}
+        
+        public void CAmensuelParDefaut (int mois){
+            CAmensuel[mois]=0;
+        }
 
 	/**
 	 * Enregistre le CA de ce représentant pour un mois donné. 
