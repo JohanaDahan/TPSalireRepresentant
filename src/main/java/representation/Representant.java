@@ -8,13 +8,14 @@ public class Representant {
 	private String adresse;
 	private float salaireFixe;
         private ZoneGeographique secteur;
-        private float[] CA = {0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f};
-    
-
+        private final float[] CAmensuel = new float[12];
+        
 	public Representant(int numero, String nom, String prenom, ZoneGeographique secteur) {
 		this.numero = numero;
 		this.nom = nom;
 		this.prenom = prenom;
+                this.secteur = secteur;
+              
 	}
 
 	public int getNumero() {
@@ -46,18 +47,12 @@ public class Representant {
 	}
 
 	public ZoneGeographique getSecteur() {
-		return secteur;
-        }
-                
-    
-        public void setSecteur(ZoneGeographique secteur) {
-		this.secteur = secteur;
-                
+		return this.secteur;
 	}
-        
-        public void CAParDefaut(int mois){
-            CA[mois]=0;
-        }
+
+	public void setSecteur(int numero, String nom) {
+		 secteur = new ZoneGeographique(numero, nom);
+	}
 
 	/**
 	 * Enregistre le CA de ce représentant pour un mois donné. 
@@ -72,8 +67,10 @@ public class Representant {
 		if (montant < 0) {
 			throw new IllegalArgumentException("Le montant doit être positif ou null");
 		}
-		else{
-                    CA[mois] = montant;
+                else{
+                    CAmensuel[mois] = montant;
+                    
+                }
 	}
 
 	/**
@@ -82,15 +79,8 @@ public class Representant {
 	 * @param pourcentage le pourcentage (>= 0 ) à appliquer sur le CA réalisé pour ce mois
 	 * @return le salaire pour ce mois, tenant compte du salaire fixe, de l'indemnité repas, et du pourcentage sur CA
 	 */
-        public float salaireMensuel(int mois, float pourcentage){
-            if (mois < 0 || mois > 11) {
-                    throw new IllegalArgumentException("Le mois doit être compris entre 0 et 11");
-		}
-		if (pourcentage < 0) {
-                    throw new IllegalArgumentException("Le pourcentage doit être positif ou null");
-		}
-            float salaire = this.salaireFixe + pourcentage*CA[mois] + secteur.getIndemniteRepas();
-            return salaire;
+	public float salaireMensuel(int mois, float pourcentage) {
+		return salaireFixe + secteur.getIndemniteRepas() + (CAmensuel[mois] * pourcentage);
 	}
 
 	@Override
